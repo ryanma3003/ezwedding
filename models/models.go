@@ -4,6 +4,6 @@ import "github.com/jinzhu/gorm"
 
 type Person struct {
 	gorm.Model
-	firstName string
-	lastName  string
+	FirstName string
+	LastName  string
 }

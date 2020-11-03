@@ -2,8 +2,9 @@ package controllers
 
 import (
 	"net/http"
-	
-	"../models"
+
+	"ez/models"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -29,7 +30,7 @@ func (idb *InDB) GetPerson(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
-func (idb *InDB) GetPersons(C *gin.Context) {
+func (idb *InDB) GetPersons(c *gin.Context) {
 	var (
 		persons []models.Person
 		result  gin.H
@@ -56,10 +57,10 @@ func (idb *InDB) CreatePerson(c *gin.Context) {
 		person models.Person
 		result gin.H
 	)
-	first_name := c.PostForm("first_name")
-	last_name := c.PostForm("last_name")
-	person.firstName = first_name
-	person.lastName = last_name
+	firstname := c.PostForm("firstname")
+	lastname := c.PostForm("lastname")
+	person.FirstName = firstname
+	person.LastName = lastname
 	idb.DB.Create(&person)
 	result = gin.H{
 		"result": person,
@@ -70,8 +71,8 @@ func (idb *InDB) CreatePerson(c *gin.Context) {
 
 func (idb *InDB) UpdatePerson(c *gin.Context) {
 	id := c.Query("id")
-	first_name := c.PostForm("first_name")
-	last_name := c.PostForm("last_name")
+	firstname := c.PostForm("firstname")
+	lastname := c.PostForm("lastname")
 	var (
 		person    models.Person
 		newPerson models.Person
@@ -84,17 +85,17 @@ func (idb *InDB) UpdatePerson(c *gin.Context) {
 			"result": "Data not Found",
 		}
 	}
-	newPerson.firstName = first_name
-	newPerson.lastName = last_name
+	newPerson.FirstName = firstname
+	newPerson.LastName = lastname
 
 	err = idb.DB.Model(&person).Updates(newPerson).Error
 	if err != nil {
-		result = gin.H {
+		result = gin.H{
 			"result": "Update Failed",
 		}
 	} else {
-		result = gin.H {
-			"result" = "Successfully Updated data",
+		result = gin.H{
+			"result": "Successfully Updated data",
 		}
 	}
 
@@ -109,17 +110,17 @@ func (idb *InDB) DeletePerson(c *gin.Context) {
 	id := c.Param("id")
 	err := idb.DB.First(&person, id).Error
 	if err != nil {
-		result = gin.H {
+		result = gin.H{
 			"result": "Data not Found",
 		}
 	}
 	err = idb.DB.Delete(&person).Error
 	if err != nil {
-		result = gin.H {
+		result = gin.H{
 			"result": "Delete Failed",
 		}
 	} else {
-		result = gin.H {
+		result = gin.H{
 			"result": "Data Successfully Deleted",
 		}
 	}

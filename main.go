@@ -1,8 +1,9 @@
 package main
 
 import (
-	"./config"
-	"./controllers"
+	"ez/config"
+	"ez/controllers"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -11,7 +12,7 @@ func main() {
 	db := config.DBInit()
 	InDB := &controllers.InDB{DB: db}
 
-	router := gin.Default
+	router := gin.Default()
 
 	router.GET("/person/:id", InDB.GetPerson)
 	router.GET("/persons", InDB.GetPersons)
